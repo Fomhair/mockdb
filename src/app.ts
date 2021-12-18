@@ -14,6 +14,4 @@ app.get("/", (req: any, res: any) => {
   res.status(200).send();
 });
 
-app.listen(PORT, ()=>{
-  controller.data.then(a => console.log(typeof a))
-})
+app.listen(PORT, () => controller.data.then(a => console.log(a)))

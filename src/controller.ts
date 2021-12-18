@@ -17,9 +17,8 @@ export class LocalDBClient implements IClient {
   // Getting data asynchronously
   get data(): Promise<any> {
     const handler = new Handler(this.dataSource);
-    const rawData = handler.readFileAsync();
-    return rawData
-    // return fs.readFileSync(this.dataSource, {encoding: "utf8"})
+    const data = handler.processData();
+    return data;
   }
 }
 
@@ -27,17 +26,23 @@ export class LocalDBClient implements IClient {
 class Handler {
   constructor(private arg: any) {}
 
-  readFileAsync = async () => {
+  // This function takes JSON file and processes it using the floating function.
+  processData = async () => {
     return new Promise((resolve, reject) => {
       fs.readFile(
         this.arg,
-        {encoding: "utf8"},
-        (err, data) => {
+        "utf8",
+        (err, file) => {
           if (err) { 
-            console.log(err);
+            console.error(err);
             reject();
           }
-          resolve(data);
+          const parsedJSON = JSON.parse(file);
+          const parsedData: Array<any> = parsedJSON.data;
+          parsedData.forEach(transaction => {
+            transaction.amount = eval(`this.${transaction.amount}`) // Evaluate amount field with "this.floating(min: number, max: number, fixed: number)"
+          });
+          resolve(parsedData);
         }
       );
     });
@@ -45,6 +50,6 @@ class Handler {
 
   // This is a realization of function which generate random value for amount-field in mock db.
   floating(min: number, max: number, fixed: number) {
-    return (Math.random() * (max - min) + min).toFixed(2);
+    return (Math.random() * (max - min) + min).toFixed(fixed);
   }
 }

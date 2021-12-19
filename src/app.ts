@@ -1,9 +1,11 @@
+import dotenv from 'dotenv';
 import express from 'express';
-import * as path from "path";
+import * as path from 'path';
 import { LocalDBClient, DBGenerator } from './controller';
 
 const app = express();
-const PORT = 3030;
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 const templateDBPath: string = path.join(__dirname, '../src/db/db.json');
 

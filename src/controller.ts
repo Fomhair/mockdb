@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import path from "path/posix";
+import * as fs from 'fs';
+import path from 'path/posix';
 
 // It's an interface for client which provides connect of the database to main app.
 interface IClient {

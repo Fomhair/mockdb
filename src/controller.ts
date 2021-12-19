@@ -41,8 +41,7 @@ export class DBGenerator {
   private checkFile: (path: string) => Promise<boolean> = async (path) => {
     return new Promise((resolve) => fs.readFile(path, "utf8", (isNoFile) => {
       if (isNoFile) {
-        let interval = setTimeout(() => resolve(false), 1000);
-        clearInterval(interval);
+        resolve(false)
       };
       resolve(true);
     }));
@@ -50,9 +49,9 @@ export class DBGenerator {
 
   // This function generates new database
   generateDB: (dataSource: string, path: string) => void = async (dataSource, path) => {
-    const processedData = new Handler(dataSource).processedData;
     this.checkFile(path).then(check => {
       if(!check) {
+        const processedData = new Handler(dataSource).processedData;
         processedData.then(data => {
           console.log("Processing data");
           fs.writeFile(path, JSON.stringify(data), (err) => {

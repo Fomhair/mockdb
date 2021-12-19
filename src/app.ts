@@ -1,17 +1,21 @@
 import express from 'express';
 import * as path from "path";
-import { LocalDBClient } from './controller';
+import { LocalDBClient, DBGenerator } from './controller';
 
-
-// Test server
 const app = express();
 const PORT = 3030;
 
-const dbpath: string = path.join(__dirname, '../src/db/db.json');
-const controller = new LocalDBClient(dbpath);
+const templateDBPath: string = path.join(__dirname, '../src/db/db.json');
+
+const database = new DBGenerator(templateDBPath);
+const controller = new LocalDBClient(database.path);
+// const controller = new LocalDBClient(rawDBPath);
 
 app.get("/", (req: any, res: any) => {
-  res.status(200).send();
+  controller.data.then(data => {
+    res.status(200);
+    res.json(data);
+  }).catch(err => console.error(err))
 });
 
-app.listen(PORT, () => controller.data.then(a => console.log(a)))
+app.listen(PORT);

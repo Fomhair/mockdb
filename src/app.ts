@@ -15,7 +15,7 @@ app.get("/", (req: any, res: any) => {
   controller.data.then(data => {
     res.status(200);
     res.json(data);
-  }).catch(err => console.error(err))
+  }).catch(err => console.error(err));
 });
 
 app.listen(PORT);

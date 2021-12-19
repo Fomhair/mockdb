@@ -112,7 +112,7 @@ class Handler {
         transaction.amount = parseFloat(buffer.toFixed(2));
       }
     });
-    return parsedData;
+    return parsedJSON;
   }
 
   // This is a realization of function which generate random value for amount-field in mock db.
